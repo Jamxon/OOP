@@ -25,10 +25,10 @@ class Model
     {
         $offset = ($this->page - 1) * Constant::LIMIT;
         if ($with_limit){
-            $sql = "select * from {$this->tableName}";
+            $sql = "select * from {$this->tableName} order by id desc";
             $state = $this->db->prepare($sql);
         }else{
-            $sql = "select * from {$this->tableName} limit :offset, :limit";
+            $sql = "select * from {$this->tableName} order by id desc limit :offset, :limit";
             $state = $this->db->prepare($sql);
             $state->bindValue(':offset',$offset, PDO::PARAM_INT);
             $state->bindValue(':limit',Constant::LIMIT, PDO::PARAM_INT);
@@ -53,5 +53,14 @@ class Model
         $state->execute();
         $category = $state->fetch(PDO::FETCH_OBJ);
         return $category;
+    }
+    function getOne( $id)
+    {
+        $sql = "select * from {$this->tableName} where id = :id";
+        $state = $this->db->prepare($sql);
+        $state->bindParam(":id", $id);
+        $state->execute();
+        $total_rows = $state->fetch(PDO::FETCH_OBJ);
+        return $total_rows;
     }
 }

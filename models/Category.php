@@ -39,4 +39,5 @@ class Category extends Model
         $state->bindParam(":id", $id);
         $state->execute();
     }
+
 }
